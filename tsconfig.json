@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+      "target": "ES2020",                // Target ECMAScript version
+      "module": "CommonJS",              // Output module format
+      "outDir": "./dist",                // Output directory for compiled files
+      "rootDir": "./src",                // Root directory for your TypeScript code
+      "strict": true,                    // Enable strict type checking
+      "esModuleInterop": true,           // Enable compatibility with ES modules
+      "skipLibCheck": true,              // Skip type checking of declaration files
+      "forceConsistentCasingInFileNames": true,
+      "resolveJsonModule": true,         // Enable JSON module imports
+      "declaration": true                // Generate declaration files (optional)
+    },
+    "include": [
+      "src/**/*.ts"                     // Include TypeScript source files
+    ],
+    "exclude": [
+      "node_modules"                    // Exclude node_modules directory
+    ]
+}
+  
