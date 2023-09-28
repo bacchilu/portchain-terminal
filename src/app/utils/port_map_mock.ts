@@ -1,4 +1,4 @@
-import {PortDetail} from './types';
+import {PortDetail} from '../types';
 
 export const portsMapMock = new Map([
     [

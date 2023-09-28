@@ -1,4 +1,4 @@
-import {Port, PortCall, Schedule} from './types';
+import {Port, PortCall, Schedule} from '../types';
 
 export const mockSchedules = [
     [
