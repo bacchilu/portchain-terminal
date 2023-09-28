@@ -6,6 +6,7 @@
   "scripts": {
     "start": "ts-node ./src/index.ts",
     "test": "jest --watch",
+    "build": "rm -rf ./dist && tsc",
     "update": "ncu -u"
   },
   "author": "Luca Bacchi (bacchilu@gmail.com)",

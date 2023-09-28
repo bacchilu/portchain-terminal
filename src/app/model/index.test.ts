@@ -3,14 +3,11 @@ import {Port, PortCall, Vessel} from '../types';
 import {getSchedules, getVessels} from './model';
 import {data as mockVessels} from './vessels.mock';
 
-jest.mock('./model', () => {
-    const originalModule = jest.requireActual('.');
-    return {
-        ...originalModule,
-        getVessels: jest.fn(),
-        getSchedules: jest.fn(),
-    };
-});
+jest.mock('./model', () => ({
+    ...jest.requireActual('.'),
+    getVessels: jest.fn(),
+    getSchedules: jest.fn(),
+}));
 
 describe('getVessels', () => {
     afterEach(() => {
