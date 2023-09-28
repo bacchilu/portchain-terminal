@@ -2,7 +2,13 @@ import Table from 'cli-table';
 import colors from 'colors/safe';
 
 import {Schedule} from './types';
-import {evalExtremeValues, evalPercentiles, getPortCallsLength, getPortsDetails, humanizeTimedelta} from './utils/utils';
+import {
+    evalExtremeValues,
+    evalPercentiles,
+    getPortCallsLength,
+    getPortsDetails,
+    humanizeTimedelta,
+} from './utils/utils';
 
 interface Percentile {
     p_05: number;
@@ -12,12 +18,17 @@ interface Percentile {
     p_90: number;
 }
 
+enum Position {
+    TOP5,
+    MIDDLE,
+    BOTTOM5,
+}
+
 interface TabularData {
     id: string;
     name: string;
     length: number;
-    top5: boolean;
-    bottom5: boolean;
+    position: Position;
     percentiles: Percentile | null;
 }
 
@@ -29,10 +40,11 @@ const createTabularData = function (schedules: Schedule[]) {
     for (const [id, portDetail] of Array.from(ports)) {
         const name = portDetail.name;
         const length = getPortCallsLength(portDetail);
-        const top5 = top.includes(length);
-        const bottom5 = bottom.includes(length);
+        let position = Position.MIDDLE;
+        if (top.includes(length)) position = Position.TOP5;
+        if (bottom.includes(length)) position = Position.BOTTOM5;
         const percentiles = evalPercentiles(portDetail);
-        table.push({id, name, length, top5, bottom5, percentiles});
+        table.push({id, name, length, position, percentiles});
     }
 
     return table;
@@ -49,9 +61,17 @@ const printPercentile = function (percentiles: Percentile | null) {
     ].join('\n');
 };
 
+const getColorByPosition = function (position: Position) {
+    if (position === Position.TOP5) return colors.bgGreen;
+    if (position === Position.BOTTOM5) return colors.bgRed;
+    if (position === Position.MIDDLE) return (s: string) => s;
+    console.assert(false);
+    return (s: string) => s;
+};
+
 const getLength = function (row: TabularData) {
     const l = row.length;
-    return row.top5 ? colors.bgGreen(`${l}`) : row.bottom5 ? colors.bgRed(`${l}`) : `${l}`;
+    return getColorByPosition(row.position)(`${l}`);
 };
 
 export const toTable = function (schedules: Schedule[]) {
